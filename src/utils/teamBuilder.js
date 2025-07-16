@@ -1,3 +1,5 @@
+import fetchAll from "./fetchAll";
+
 export default async function teamBuilder() {
 
     function getId() {

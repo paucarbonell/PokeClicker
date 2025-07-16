@@ -1,23 +1,11 @@
 import Pokemon from "./Pokemon"
-import teamBuilder from "../utils/teamBuilder"
-import { useEffect } from "react"
 
-export default function Team({ team, setTeam, stats, teamNum, width, reverse = false }) {
-    const generateTeam = () => {
-        teamBuilder().then(t => {
-            setTeam(t);
-        });
-    };
-
-    useEffect(() => {
-        generateTeam();
-    }, []);
+export default function Team({ team, stats, teamNum, width, reverse = false, openBuilder }) {
 
     return (
-        <>
-            <div className={`w-${width} flex ${reverse ? `flex-row-reverse` : `flex-row`}`}>
+            <div className={`w-${width} flex items-center ${reverse ? `flex-row-reverse` : `flex-row`}`}>
                 <div className="justify-items-center">
-                    <div className="mb-4 font-bold text-2xl">TEAM {teamNum}</div>
+                    <div className="mb-4 font-bold text-2xl bg-white p-2 border-2 border-black">TEAM {teamNum}</div>
                     <div className="grid grid-cols-2 grid-rows-3 gap-2">
                         {team.map((pokemon, i) => {
                             let rowClass = '';
@@ -31,9 +19,9 @@ export default function Team({ team, setTeam, stats, teamNum, width, reverse = f
                             );
                         })}
                     </div>
-                    <button onClick={generateTeam} className="mt-4">GENERATE NEW TEAM</button>
+                    <button onClick={openBuilder} className="mt-4 bg-white border-2 border-black p-2">CHOOSE YOUR TEAM!</button>
                 </div>
-                <section className="m-5 flex flex-col items-center justify-center">
+                <section className="m-5 p-2 h-50 flex flex-col items-center justify-center border-2 border-black bg-white">
                     <div className="font-bold mb-2 underline-offset-4">STATS</div>
                     <ol className="flex flex-col items-center">
                         {stats.map(([name, value], j) => {
@@ -44,6 +32,5 @@ export default function Team({ team, setTeam, stats, teamNum, width, reverse = f
                     </ol>
                 </section>
             </div>
-        </>
     )
 }
