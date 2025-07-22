@@ -1,12 +1,10 @@
+import { Pokedex } from "pokeapi-js-wrapper";
+const P = new Pokedex();
+
 export default async function fetchAll() {
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=151`;
-    const res = await fetch(url);
-    const allPokemon = await res.json();
-
-    const promises = allPokemon.results.map(p =>
-        fetch(p.url).then(res => res.json())
-    );
-
-    const detailedPokemon = await Promise.all(promises);
-    return detailedPokemon;
+  const data = await P.getPokemonsList({ limit: 151 });
+  const detailedPokemon = await Promise.all(
+    data.results.map((p) => P.getPokemonByName(p.name))
+  );
+  return detailedPokemon;
 }

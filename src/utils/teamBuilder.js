@@ -1,29 +1,15 @@
-import fetchAll from "./fetchAll";
+import { Pokedex } from "pokeapi-js-wrapper";
+const P = new Pokedex();
 
 export default async function teamBuilder() {
+  function getId() {
+    return Math.floor(Math.random() * 151) + 1;
+  }
 
-    function getId() {
-        let id = Math.floor(Math.random() * 151) + 1;
-        return id;
-    }
+  const ids = new Set();
+  while (ids.size < 6) ids.add(getId());
 
-    async function fetchPokemon() {
-        let id = getId();
-        let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-        const res = await fetch(url);
-        const pokemon = await res.json();
-        return pokemon;
-    }
+  const team = await Promise.all([...ids].map((id) => P.getPokemonByName(id)));
 
-    const team = [];
-
-    while (team.length < 6) {
-        const poke = await fetchPokemon();
-        if (!team.some(p => p.id === poke.id)) {
-            team.push(poke);
-        }
-    }
-    return team;
+  return team;
 }
-
-
